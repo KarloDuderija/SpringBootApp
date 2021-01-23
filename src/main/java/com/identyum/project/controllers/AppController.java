@@ -41,18 +41,24 @@ public class AppController {
             bindingResult
                     .rejectValue("userName", "error.user",
                             "User with that username already exists");
-            modelAndView.setViewName("registration");
-            return modelAndView;
         }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
+            modelAndView.setViewName("signup");
         }
-        if(!bindingResult.hasErrors()) {
+        else {
             userServiceImpl.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
+            modelAndView.setViewName("verify");
         }
-        modelAndView.setViewName("redirect:/verify");
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    @GetMapping( "/login")
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
         return modelAndView;
     }
 

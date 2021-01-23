@@ -34,7 +34,7 @@
             <div class="form-group row">
                 <label class="col-4 col-form-label">Repeat Password: </label>
                 <div class="col-8">
-                    <input autocomplete="false" class="form-control" name="matchingPassword" type="password"
+                    <input autocomplete="false" class="form-control" id="matchPassword" name="matchingPassword" type="password"
                            th:field="*{matchingPassword}"
                            placeholder="Type..." required/>
                     <p th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></p>
