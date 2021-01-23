@@ -2,7 +2,7 @@ package com.identyum.project.controllers;
 
 import com.identyum.project.domain.User;
 import com.identyum.project.dto.UserDTO;
-import com.identyum.project.services.UserService;
+import com.identyum.project.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class AppController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @GetMapping("")
     public String viewHomePage() {
@@ -35,7 +35,7 @@ public class AppController {
     @PostMapping("/sign-up")
     public ModelAndView processRegister(@Valid final UserDTO user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByUserName(user.getUserName());
+        User userExists = userServiceImpl.findUserByUserName(user.getUserName());
 
         if(userExists != null) {
             bindingResult
@@ -48,17 +48,12 @@ public class AppController {
             modelAndView.setViewName("registration");
         }
         if(!bindingResult.hasErrors()) {
-            userService.saveUser(user);
+            userServiceImpl.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
         }
         modelAndView.setViewName("redirect:/verify");
         return modelAndView;
-    }
-
-    @GetMapping("/login")
-    public String viewSignIn() {
-        return "login";
     }
 
     @GetMapping("/verify")
