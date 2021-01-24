@@ -68,12 +68,9 @@ public class UserDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", matchingPassword='" + matchingPassword + '\'' +
-                ", isUsing2FA=" + isUsing2FA +
-                ", role=" + role +
-                '}';
+        final StringBuilder builder = new StringBuilder();
+        builder.append("UserDto [userName=").append(userName).append(", password=").append(password).append(", matchingPassword=").append(matchingPassword).append(", isUsing2FA=")
+                .append(isUsing2FA).append(", role=").append(role).append("]");
+        return builder.toString();
     }
 }

@@ -46,12 +46,12 @@ public class AppController {
             modelAndView.setViewName("signup");
         }
         else {
+            System.out.println("Managed to enter else with user" + user);
             userServiceImpl.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("verify");
         }
-        modelAndView.setViewName("login");
         return modelAndView;
     }
 
