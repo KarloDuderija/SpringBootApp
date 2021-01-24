@@ -37,7 +37,7 @@ public class UserServiceImpl {
         final User user = new User();
         user.setUserName(account.getUserName());
         user.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
-        Role userRole = roleRepository.findByRole("ADMIN");
+        Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
