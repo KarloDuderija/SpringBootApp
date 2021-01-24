@@ -50,7 +50,7 @@ public class AppController {
             userServiceImpl.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
-            modelAndView.setViewName("verify");
+            modelAndView.setViewName("success");
         }
         return modelAndView;
     }
@@ -64,7 +64,7 @@ public class AppController {
 
     @GetMapping("/verify")
     public String viewVerify() {
-        return "verify";
+        return "success";
     }
 
     @GetMapping("/submit-otp")
