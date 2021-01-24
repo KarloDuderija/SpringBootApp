@@ -47,7 +47,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("userName")
                 .loginPage(loginPage)
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/images")
+                .defaultSuccessUrl("/verify")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher(logoutPage))
                 .logoutSuccessUrl(loginPage).and().exceptionHandling();

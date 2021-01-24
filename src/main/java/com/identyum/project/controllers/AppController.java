@@ -1,6 +1,7 @@
 package com.identyum.project.controllers;
 
 import com.identyum.project.domain.User;
+import com.identyum.project.dto.PhoneDTO;
 import com.identyum.project.dto.UserDTO;
 import com.identyum.project.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +64,12 @@ public class AppController {
     }
 
     @GetMapping("/verify")
-    public String viewVerify() {
-        return "success";
+    public ModelAndView viewVerify() {
+        ModelAndView modelAndView = new ModelAndView();
+        PhoneDTO phone = new PhoneDTO();
+        modelAndView.addObject("phoneDTO", phone);
+        modelAndView.setViewName("verify");
+        return modelAndView;
     }
 
     @GetMapping("/submit-otp")
