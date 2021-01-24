@@ -23,16 +23,16 @@ public class AppController {
         return "index";
     }
 
-    @GetMapping("/sign-up")
+    @GetMapping("/signup")
     public ModelAndView viewSignUp() {
         ModelAndView modelAndView = new ModelAndView();
         UserDTO user = new UserDTO();
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("userDTO", user);
         modelAndView.setViewName("signup");
         return modelAndView;
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public ModelAndView processRegister(@Valid final UserDTO user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userServiceImpl.findUserByUserName(user.getUserName());
