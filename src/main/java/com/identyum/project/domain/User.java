@@ -18,17 +18,17 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @Column(name = "user_name", nullable = false, unique = true, length = 50)
+    @Column(name = "userName", nullable = false, unique = true, length = 50)
     private String userName;
 
-    @Column(name = "pwd" , nullable = false, length = 127)
+    @Column(name = "password" , nullable = false, length = 127)
     private String password;
 
     public User(String userName) {

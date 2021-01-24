@@ -44,11 +44,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and().csrf().disable()
                 .formLogin()
+                .usernameParameter("userName")
                 .loginPage(loginPage)
                 .failureUrl("/login?error=true")
                 .defaultSuccessUrl("/images")
-                .usernameParameter("user_name")
-                .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher(logoutPage))
                 .logoutSuccessUrl(loginPage).and().exceptionHandling();
@@ -60,5 +59,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/resources/**", "/static/**","/webjars/**");
     }
-
 }

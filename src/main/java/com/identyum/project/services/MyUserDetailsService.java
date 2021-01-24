@@ -25,6 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String userName) {
         User user = userServiceImpl.findUserByUserName(userName);
+        System.out.println("user" + user);
         List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
