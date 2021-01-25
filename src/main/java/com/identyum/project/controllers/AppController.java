@@ -1,9 +1,12 @@
 package com.identyum.project.controllers;
 
 import com.identyum.project.domain.User;
+import com.identyum.project.dto.CodeDTO;
 import com.identyum.project.dto.PhoneDTO;
 import com.identyum.project.dto.UserDTO;
 import com.identyum.project.services.UserServiceImpl;
+import com.identyum.project.verify.TwoFactorVerify;
+import com.nexmo.client.verify.VerifyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,13 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class AppController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private TwoFactorVerify twoFactorVerify;
+
 
     @GetMapping("")
     public String viewHomePage() {
@@ -64,17 +73,52 @@ public class AppController {
     }
 
     @GetMapping("/verify")
-    public ModelAndView viewVerify() {
+    public ModelAndView viewVerify(Principal principal, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        PhoneDTO phone = new PhoneDTO();
-        modelAndView.addObject("phoneDTO", phone);
-        modelAndView.setViewName("verify");
+        User userExists = userServiceImpl.findUserByUserName(principal.getName());
+        System.out.println("user ++>>" + userExists);
+        String existsPhone = userExists.getPhone();
+        if(existsPhone != null) {
+            session.setAttribute("user", userExists);
+            modelAndView.setViewName("redirect:/details");
+        } else {
+            PhoneDTO phone = new PhoneDTO();
+            modelAndView.addObject("phoneDTO", phone);
+            modelAndView.setViewName("verify");
+        }
         return modelAndView;
     }
 
-    @GetMapping("/submit-otp")
-    public String viewSubmitOtp() {
-        return "submitotp";
+    @PostMapping("/phone_register")
+    public ModelAndView processValidation(final PhoneDTO phoneDTO, Principal principal) {
+        String requestId = "9e1c90d4b3734e81a3fac2dacceb4660";
+        ModelAndView modelAndView = new ModelAndView();
+
+        User user = userServiceImpl.findUserByUserName(principal.getName());
+        VerifyRequest request = new VerifyRequest( "+385" + phoneDTO.getNumber(), "Identyum");
+        request.setLength(4);
+
+//        CheckResponse response = twoFactorVerify.nexmoVerifyClient(client).check(requestId, "1591");
+//        if (response.getStatus() == VerifyStatus.OK) {
+//            System.out.printf("Complete - price: %s", response.getPrice());
+//        } else {
+//            System.out.printf("ERROR! %s: %s",
+//                    response.getStatus(),
+//                    response.getErrorText()
+//            );
+//        }
+        System.out.println("user that wants to register:"+user);
+        System.out.println("number is:"+phoneDTO.getNumber());
+        modelAndView.setViewName("redirect:/submitotp");
+        return modelAndView;
+    }
+
+    @GetMapping("/submitotp")
+    public ModelAndView viewSubmitOtp() {
+        ModelAndView modelAndView = new ModelAndView();
+        CodeDTO code = new CodeDTO();
+        modelAndView.addObject("codeDTO", code);
+        return modelAndView;
     }
 
     @GetMapping("/details")
