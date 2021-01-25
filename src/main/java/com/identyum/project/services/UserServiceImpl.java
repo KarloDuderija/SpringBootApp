@@ -2,6 +2,7 @@ package com.identyum.project.services;
 
 import com.identyum.project.domain.Role;
 import com.identyum.project.domain.User;
+import com.identyum.project.dto.PhoneDTO;
 import com.identyum.project.dto.UserDTO;
 import com.identyum.project.repositories.RoleRepository;
 import com.identyum.project.repositories.UserRepository;
@@ -37,8 +38,16 @@ public class UserServiceImpl {
         final User user = new User();
         user.setUserName(account.getUserName());
         user.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        user.setPhone(null);
         Role userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        userRepository.save(user);
+    }
+
+    public void savePhone(User user, PhoneDTO phoneDTO) {
+        user.setPhone("+385"+phoneDTO);
+        System.out.println("user -->"+user);
+        System.out.println("phone -->"+phoneDTO);
         userRepository.save(user);
     }
 }
